@@ -26,16 +26,22 @@ function App() {
     <div>
       <Header />
       <CreateArea onAdd={addNote} />
-      {notes.map(noteItem => (
-        <Note
-          key={noteItem.id}
-          id={noteItem.id}
-          title={noteItem.title}
-          content={noteItem.content}
-          onDelete={deleteNote}
-          onEdit={editNote}
-        />
-      ))}
+      {notes.length === 0 ? (
+        <div className="empty-state">No notes yet. Add your first note above.</div>
+      ) : (
+        <div className="notes-grid">
+          {notes.map(noteItem => (
+            <Note
+              key={noteItem.id}
+              id={noteItem.id}
+              title={noteItem.title}
+              content={noteItem.content}
+              onDelete={deleteNote}
+              onEdit={editNote}
+            />
+          ))}
+        </div>
+      )}
       <Footer />
     </div>
   );
