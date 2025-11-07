@@ -19,7 +19,24 @@ function Note({ id, title, content, onDelete, onEdit }) {
             title: draft.title.trim(),
             content: draft.content.trim()
         };
-        if (!trimmed.title || !trimmed.content) return;
+        if (!trimmed.title || !trimmed.content) {
+            // Visual feedback for empty fields
+            if (!trimmed.title) {
+                const titleInput = document.querySelector(`[aria-label="Edit title"]`);
+                if (titleInput) titleInput.style.borderColor = 'var(--danger)';
+                setTimeout(() => {
+                    if (titleInput) titleInput.style.borderColor = 'var(--border)';
+                }, 2000);
+            }
+            if (!trimmed.content) {
+                const contentInput = document.querySelector(`[aria-label="Edit content"]`);
+                if (contentInput) contentInput.style.borderColor = 'var(--danger)';
+                setTimeout(() => {
+                    if (contentInput) contentInput.style.borderColor = 'var(--border)';
+                }, 2000);
+            }
+            return;
+        }
         onEdit(id, trimmed);
         setIsEditing(false);
     }
@@ -33,16 +50,49 @@ function Note({ id, title, content, onDelete, onEdit }) {
                         onChange={(e) => setDraft(d => ({ ...d, title: e.target.value }))}
                         placeholder="Title"
                         maxLength={50}
+                        aria-label="Edit title"
+                        autoFocus
+                        style={{
+                            width: '100%',
+                            border: '1px solid var(--border)',
+                            borderRadius: '6px',
+                            padding: '8px 12px',
+                            marginBottom: '10px',
+                            fontFamily: 'inherit',
+                            fontSize: '1.1em',
+                            fontWeight: '600',
+                            backgroundColor: 'var(--bg)',
+                            color: 'var(--text)',
+                            outline: 'none'
+                        }}
                     />
                     <textarea
                         value={draft.content}
                         onChange={(e) => setDraft(d => ({ ...d, content: e.target.value }))}
                         rows={5}
                         maxLength={500}
+                        aria-label="Edit content"
+                        style={{
+                            width: '100%',
+                            border: '1px solid var(--border)',
+                            borderRadius: '6px',
+                            padding: '8px 12px',
+                            marginBottom: '12px',
+                            fontFamily: 'inherit',
+                            fontSize: '1rem',
+                            resize: 'vertical',
+                            backgroundColor: 'var(--bg)',
+                            color: 'var(--text)',
+                            outline: 'none'
+                        }}
                     />
                     <div className="note-buttons">
-                        <button onClick={saveEdit}>Save</button>
-                        <button onClick={cancelEdit}>Cancel</button>
+                        <button onClick={saveEdit} aria-label="Save changes">
+                            <span className="material-symbols-outlined">save</span>
+                        </button>
+                        <button onClick={cancelEdit} aria-label="Cancel editing">
+                            <span className="material-symbols-outlined">close</span>
+                        </button>
                     </div>
                 </div>
             ) : (
@@ -50,8 +100,12 @@ function Note({ id, title, content, onDelete, onEdit }) {
                     <h2>{title}</h2>
                     <p>{content}</p>
                     <div className="note-buttons">
-                        <button onClick={startEdit}>Edit</button>
-                        <button onClick={() => onDelete(id)}>Delete</button>
+                        <button onClick={startEdit} aria-label="Edit this note">
+                            <span className="material-symbols-outlined">edit</span>
+                        </button>
+                        <button onClick={() => onDelete(id)} aria-label="Delete this note">
+                            <span className="material-symbols-outlined">delete</span>
+                        </button>
                     </div>
                 </div>
             )}

@@ -56,7 +56,7 @@ function CreateArea(props) {
         event.preventDefault();
 
         if (note.title.trim() === "" || note.content.trim() === "") {
-            setError("Title and content cannot be empty");
+            setError("Both title and content are required");
             return;
         }
 
@@ -80,9 +80,11 @@ function CreateArea(props) {
                     placeholder="Title"
                     maxLength={MAX_TITLE_LENGTH}
                     required
+                    aria-label="Note title"
+                    aria-describedby={isExpanded ? "title-count" : undefined}
                 />
                 {isExpanded && (
-                    <div className="char-count">
+                    <div className="char-count" aria-live="polite" id="title-count">
                         {charCount.title}/{MAX_TITLE_LENGTH}
                     </div>
                 )}
@@ -95,9 +97,11 @@ function CreateArea(props) {
                     rows={isExpanded ? "5" : "3"}
                     maxLength={MAX_CONTENT_LENGTH}
                     required
+                    aria-label="Note content"
+                    aria-describedby={isExpanded ? "content-count" : undefined}
                 />
                 {isExpanded && (
-                    <div className="char-count">
+                    <div className="char-count" aria-live="polite" id="content-count">
                         {charCount.content}/{MAX_CONTENT_LENGTH}
                     </div>
                 )}
@@ -105,8 +109,11 @@ function CreateArea(props) {
                 <button
                     type="submit"
                     className={isExpanded ? 'visible' : ''}
+                    aria-label="Add Note"
+                    title="Add Note"
+                    tabIndex={isExpanded ? '0' : '-1'}
                 >
-                    +
+                    <span className="material-symbols-outlined">add</span>
                 </button>
             </form>
         </div>
