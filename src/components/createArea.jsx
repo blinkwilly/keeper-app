@@ -82,6 +82,7 @@ function CreateArea(props) {
                     required
                     aria-label="Note title"
                     aria-describedby={isExpanded ? "title-count" : undefined}
+                    style={{ fontSize: 'clamp(0.9rem, 2.5vw, 1.05rem)' }}
                 />
                 {isExpanded && (
                     <div className="char-count" aria-live="polite" id="title-count">
@@ -99,6 +100,7 @@ function CreateArea(props) {
                     required
                     aria-label="Note content"
                     aria-describedby={isExpanded ? "content-count" : undefined}
+                    style={{ fontSize: 'clamp(0.9rem, 2.5vw, 1.05rem)' }}
                 />
                 {isExpanded && (
                     <div className="char-count" aria-live="polite" id="content-count">
